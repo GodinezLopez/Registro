@@ -223,7 +223,7 @@ function mostrarHistorial1() {
     // Verificar si hay datos para mostrar
     if (historial.length === 0) {
         contenedorHistorial.style.display = "none"; // Ocultar contenedor si no hay datos
-        return; // No mostrar contenedor si no hay datos
+        return;
     } else {
         contenedorHistorial.style.display = "block"; // Mostrar contenedor si hay datos
     }
@@ -233,51 +233,44 @@ function mostrarHistorial1() {
     historial.forEach((registro) => {
         // Crear un nuevo div para cada registro
         const fecRegistroDiv = document.createElement('div');
-        fecRegistroDiv.className = 'fec'; // Clase opcional para cada registro
+        fecRegistroDiv.className = 'fec';
         fecRegistroDiv.innerHTML = `
             <div id="fecha">${registro.fecha}</div>
             <div id="entradaH">ENTRADA: ${registro.entrada}</div>
             <div id="salidaH">${registro.salida ? 'SALIDA: ' + registro.salida : ''}</div><br>
         `;
-        contenedorHistorial.appendChild(fecRegistroDiv); // Agregar cada registro dentro de historialContenedor
+        contenedorHistorial.appendChild(fecRegistroDiv);
 
         // Calcular total de minutos si hay hora de salida
         if (registro.salida) {
-            const [horaEntrada, minutosEntrada] = registro.entrada.split(':').map(Number);
-            const [horaSalida, minutosSalida] = registro.salida.split(':').map(Number);
-            const entradaEnMinutos = horaEntrada * 60 + minutosEntrada;
-            const salidaEnMinutos = horaSalida * 60 + minutosSalida;
+            const entradaEnMinutos = convertirA12HorasEnMinutos(registro.entrada);
+            const salidaEnMinutos = convertirA12HorasEnMinutos(registro.salida);
 
-            const minutosTrabajados = salidaEnMinutos - entradaEnMinutos; // Calcular minutos trabajados
+            let minutosTrabajados = salidaEnMinutos - entradaEnMinutos;
+            if (minutosTrabajados < 0) {
+                minutosTrabajados += 1440; // Ajuste si la salida es después de medianoche
+            }
 
-            // Acumular minutos trabajados
             totalMinutos += minutosTrabajados;
 
-            // Calcular horas y minutos trabajados en el día
             const horasTrabajadas = Math.floor(minutosTrabajados / 60);
             const minutosRestantes = minutosTrabajados % 60;
 
-            // Crear un nuevo div para mostrar las horas trabajadas
             const tiempoTrabajadoDiv = document.createElement('div');
-            tiempoTrabajadoDiv.className = 'tiempoTrabajado'; // Clase para el tiempo trabajado
+            tiempoTrabajadoDiv.className = 'tiempoTrabajado';
             tiempoTrabajadoDiv.innerText = `Horas concluidas: ${horasTrabajadas} horas con ${minutosRestantes} minutos`;
 
-            // Agregar el div de tiempo trabajado debajo del registro
             fecRegistroDiv.appendChild(tiempoTrabajadoDiv);
         }
     });
 
-    // Calcular total de horas y minutos
     const totalHoras = Math.floor(totalMinutos / 60);
     const minutosRestantesTotales = totalMinutos % 60;
+    const totalSegundos = totalMinutos * 60;
+    const totalMinutosDesdeHoras = totalHoras * 60 + minutosRestantesTotales;
+    const totalMeses = Math.floor(totalHoras / (24 * 30));
 
-    // Calcular segundos y meses
-    const totalSegundos = totalMinutos * 60; // 1 minuto = 60 segundos
-    const totalMinutosDesdeHoras = totalHoras * 60 + minutosRestantesTotales; // Convertir horas a minutos
-    const totalMeses = Math.floor(totalHoras / (24 * 30)); // 1 mes = aproximadamente 30 días
-
-    // Mostrar total en el div con clase totalH
-    const totalHDiv = document.getElementsByClassName("totalH")[0]; // Seleccionar el primer div con la clase totalH
+    const totalHDiv = document.getElementsByClassName("totalH")[0];
     if (totalHDiv) {
         totalHDiv.innerHTML = `
             <h2>HORAS TOTALES</h2>
@@ -289,6 +282,23 @@ function mostrarHistorial1() {
     }
 }
 
+// Función para convertir formato de 12 horas (hh:mm AM/PM) a minutos sin cambio de 24 horas
+function convertirA12HorasEnMinutos(hora12) {
+    // Separar horas, minutos y AM/PM
+    const [time, period] = hora12.split(" ");
+    let [horas, minutos] = time.split(":").map(Number);
+
+    // Si es PM y no es 12 PM, sumamos 12 horas para convertir a 24 horas
+    if (period === "p.m." && horas !== 12) {
+        horas += 12;
+    }
+    // Si es AM y es 12 AM, convertir a 0 horas
+    if (period === "a.m." && horas === 12) {
+        horas = 0;
+    }
+
+    return horas * 60 + minutos;
+}
 function mostrarFechaHora() {
     // Crear un objeto Date
     const fecha = new Date();
@@ -317,3 +327,60 @@ mostrarFechaHora();
 
 // Actualizar la hora cada segundo
 setInterval(mostrarFechaHora, 1000);
+
+function exportarHistorial() {
+    const historial = JSON.parse(localStorage.getItem('historial')) || [];
+    
+    // Verificar si hay datos para exportar
+    if (historial.length === 0) {
+        alert("No hay datos para exportar.");
+        return;
+    }
+
+    // Crear un array de filas para la hoja de cálculo
+    const filas = [['Fecha', 'Entrada', 'Salida', 'Horas Concluidas']];
+    let totalMinutos = 0;
+
+    historial.forEach((registro) => {
+        // Calcular horas concluidas
+        let horasConcluidas = '';
+        if (registro.salida) {
+            const entradaEnMinutos = convertirA12HorasEnMinutos(registro.entrada);
+            const salidaEnMinutos = convertirA12HorasEnMinutos(registro.salida);
+            let minutosTrabajados = salidaEnMinutos - entradaEnMinutos;
+
+            if (minutosTrabajados < 0) {
+                minutosTrabajados += 1440; // Ajuste si la salida es después de medianoche
+            }
+
+            totalMinutos += minutosTrabajados;
+            const horasTrabajadas = Math.floor(minutosTrabajados / 60);
+            const minutosRestantes = minutosTrabajados % 60;
+            horasConcluidas = `${horasTrabajadas} horas con ${minutosRestantes} minutos`;
+        }
+
+        // Agregar la fila de datos
+        filas.push([registro.fecha, registro.entrada, registro.salida || '', horasConcluidas]);
+    });
+
+    // Calcular total horas
+    const totalHoras = Math.floor(totalMinutos / 60);
+    const minutosRestantesTotales = totalMinutos % 60;
+    const totalHorasTexto = `Total: ${totalHoras} horas con ${minutosRestantesTotales} minutos`;
+
+    // Agregar total al final
+    filas.push(['', '', '', totalHorasTexto]);
+
+    // Crear un libro de trabajo y una hoja
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(filas);
+
+    // Agregar la hoja al libro
+    XLSX.utils.book_append_sheet(wb, ws, 'Historial');
+
+    // Exportar el archivo Excel
+    XLSX.writeFile(wb, 'historial.xlsx');
+}
+
+// Asocia la función al botón
+document.getElementById("export-T").addEventListener("click", exportarHistorial);

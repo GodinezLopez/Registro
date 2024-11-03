@@ -188,3 +188,8 @@ h2, h3, h4 {
         gap: 10px;
     }
 }
+.responsive-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    min-width: 120px; /* Establece un ancho mínimo para los botones */
+}
