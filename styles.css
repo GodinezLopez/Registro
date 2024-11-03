@@ -1,11 +1,4 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    /*user-select: none;*/
-}
-.card {
-    border-radius: 8px;
-}
+
 #fechaCuadro {
     background-color: #333; 
     color: #fff;          
@@ -102,4 +95,96 @@ body, html {
 }
 #archivo{
     display: none;
+}
+
+
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+}
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+}
+.card {
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: none;
+    background-color: #ffffff;
+}
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-success {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+.btn-danger {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+.btn {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.lin {
+    border-top: 2px solid var(--primary-color);
+    margin: 2rem 0;
+}
+.inpexp {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.contenido1 {
+    margin-top: 2rem;
+}
+.ch {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: #f8f9fa;
+}
+h2, h3, h4 {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+.form-control {
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+}
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+#contenidoPrincipal {
+    background-color: #ffffff;
+    border-radius: 20px;
+}
+@media (max-width: 768px) {
+    .card {
+        width: 95% !important;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 }
