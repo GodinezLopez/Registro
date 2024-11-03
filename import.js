@@ -27,7 +27,10 @@ document.getElementById("archivo").addEventListener("change", function() {
         }));
 
         localStorage.setItem('historial', JSON.stringify(historial));
-        alert("Datos importados correctamente.");
+        success1();
+        setTimeout(function() {
+            location.reload();
+          }, 1800);
     };
 
     reader.readAsArrayBuffer(archivo); // Leer el archivo como un ArrayBuffer
@@ -47,3 +50,14 @@ document.getElementById("exportar").addEventListener("click", function() {
     XLSX.utils.book_append_sheet(wb, ws, "Registro");
     XLSX.writeFile(wb, "Registro.xlsx");
 });
+
+
+function success1(){
+    Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Los datos se importaron correctamente",
+        showConfirmButton: false,
+        timer: 1500
+      });
+}
