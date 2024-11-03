@@ -1,0 +1,105 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    /*user-select: none;*/
+}
+.card {
+    border-radius: 8px;
+}
+#fechaCuadro {
+    background-color: #333; 
+    color: #fff;          
+    text-align: center;
+}
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.horas input{
+    text-align: center;
+    width: 50%;
+    font-size: 20px;
+    border: solid 1px #000;
+    user-select: none;
+}
+.lin{
+    border: solid 0.7px #000;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.form-label{
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.content{
+    display: flex;
+    justify-content: center;
+}
+.buttons{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+.inpexp{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+.datos{
+    display: flex;
+    justify-content: end;
+}
+
+.histo{
+    padding: 1rem;
+    margin: 2rem;
+    border: solid;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+.fecha{
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.borr{
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.borr button{
+    padding: 7px;
+    border-radius: 7px;
+    transition: 0.3s;
+}
+.borr button:hover{
+    transform: scale(1.1);
+    background: #ff0000;
+    color: #fff;
+}
+.ch{
+    display: flex;
+    width: 100%;
+}
+.fec{
+    margin-top: 3rem;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    border: solid;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 17px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.totalH{
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 1px;
+}
+#archivo{
+    display: none;
+}
