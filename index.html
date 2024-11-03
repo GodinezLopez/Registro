@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro Profesional de Horas</title>
+    <link rel="icon" href="sr.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -11,67 +12,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 <body>
-    <div id="formularioContainer" class="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <div class="card p-4 shadow-lg text-center" style="width: 100%; max-width: 400px;">
-            <h2 class="mb-4">Horas por Día</h2>
+    <div id="formularioContainer" class="d-flex justify-content-center align-items-center min-vh-100 py-5">
+        <div class="card p-5 shadow-lg text-center" style="width: 100%; max-width: 450px;">
+            <h2 class="mb-4">Registro de Horas Diarias</h2>
             <form id="formHoras">
-                <div class="mb-3">
-                    <label for="horasPorDia" class="form-label">¿Cuántas horas harás por día?</label>
-                    <input type="number" id="horasPorDia" class="form-control" placeholder="Ingresa horas" min="1" required>
+                <div class="mb-4">
+                    <label for="horasPorDia" class="form-label">¿Cuántas horas trabajarás hoy?</label>
+                    <input type="number" id="horasPorDia" class="form-control" placeholder="Ingresa las horas" min="1" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                <button type="submit" class="btn btn-primary w-100">Comenzar Registro</button>
             </form>
         </div>
     </div>
     
-    <div id="contenidoPrincipal" class="container my-5 p-4 bg-light shadow-lg rounded text-center d-none">
-        <div class="datos">
-            <button id="borrarDatos" class="btn btn-danger mt-2">Borrar Todos los Datos</button>
+    <div id="contenidoPrincipal" class="container my-5 p-5 shadow-lg rounded text-center d-none">
+        <div class="datos mb-4">
+            <button id="borrarDatos" class="btn btn-danger">Borrar Todos los Datos</button>
         </div>
-        <h2 class="mb-4">Registro de Horas</h2>
+        <h2 class="mb-4">Sistema de Registro de Horas</h2>
         <div class="mb-4">
-            <h3>Fecha y Hora</h3>
-            <p id="fechaCompleta" class="fw-bold"></p>
+            <h3>Fecha y Hora Actual</h3>
+            <p id="fechaCompleta" class="fw-bold fs-5"></p>
         </div>
         <hr class="lin">
         <div class="row mb-4">
             <div class="col-md-12 horas">
-                <label for="entrada" class="form-label">Entradas y Salidas</label>
+                <label for="entrada" class="form-label fs-5">Registro de Entradas y Salidas</label>
                 <div class="center">
-                    <input type="text" id="entrada" class="form-control" readonly>
+                    <input type="text" id="entrada" class="form-control mb-3" readonly>
                 </div>
                 <div class="content">
-                    <div class="buttons">
-                        <button id="guardarEntrada" class="btn btn-success mt-2" onclick="guardaEntrada()">Guardar Entrada</button>
-                        <button id="guardarSalida" class="btn btn-success mt-2" onclick="guardaSalida()">Guardar Salida</button>
+                    <div class="buttons mt-3">
+                        <button id="guardarEntrada" class="btn btn-success me-2" onclick="guardaEntrada()">Registrar Entrada</button>
+                        <button id="guardarSalida" class="btn btn-success" onclick="guardaSalida()">Registrar Salida</button>
                     </div>
                 </div>
             </div>
-           
         </div>
         <hr class="lin">
         <div id="registroHoras" class="mt-4">
-            <h4>Entradas y Salidas</h4>
+            <h4 class="mb-3">Historial de Entradas y Salidas</h4>
             <div class="container">
-                <div class="inpexp">
-                    <input type="file" id="archivo" accept=".xlsx, .xls" />
-                    <button class="btn btn-success mt-2" id="importar">Importar</button>
-                    <button class="btn btn-success mt-2" id="exportar">Exportar</button>
-                    <button class="btn btn-success mt-2" title="refrescar" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
+                <div class="inpexp mb-3">
+                    <input type="file" id="archivo" accept=".xlsx, .xls" class="form-control" />
+                    <button class="btn btn-success" id="importar">Importar</button>
+                    <button class="btn btn-success" id="exportar">Exportar</button>
+                    <button class="btn btn-success" title="Refrescar" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
                 </div>
             </div>
             <div class="contenido1">
-                <div id="fechaguardada"></div>
+                <div id="fechaguardada" class="mb-2"></div>
                 <div id="horasGuardadas"></div>
             </div>           
         </div>      
         <hr class="lin">
-        <h4>Tus Horas</h4>
+        <h4 class="mb-3">Resumen de Horas Trabajadas</h4>
         <div class="ch">
             <div id="historialContenedor"></div>
         </div>
         <hr class="lin">
-        <div id="totalH" class="totalH"></div>
+        <div id="totalH" class="totalH mt-4 fs-5 fw-bold"></div>
     </div>
     <script>
     </script>
