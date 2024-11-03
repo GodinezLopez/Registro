@@ -1,6 +1,6 @@
 {
-    "name": "Nombre de tu Aplicación",
-    "short_name": "AppCorta",
+    "name": "Registro",
+    "short_name": "Registro",
     "start_url": "https://godinezlopez.github.io/Registro/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
