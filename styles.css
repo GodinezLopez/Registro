@@ -142,7 +142,11 @@ body.dark-mode {
 .dark-mode .form-control:focus::placeholder{
     color: var(--background-color);
 }
-
+.dark-mode .swal2-popup {
+    background-color: #1a1a1a; 
+    color: white; 
+    border: solid rgb(79, 79, 79) 0.5px;
+}
 /* Theme switch styles */
 .theme-switch-wrapper {
     display: flex;
