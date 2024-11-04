@@ -12,6 +12,19 @@ document.getElementById("archivo").addEventListener("change", function() {
         return;
     }
 
+    // Verificar la extensión del archivo
+    const extensionesPermitidas = ['.xls', '.xlsx'];
+    const extensionArchivo = archivo.name.substring(archivo.name.lastIndexOf('.'));
+
+    if (!extensionesPermitidas.includes(extensionArchivo)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Archivo no compatible',
+            text: 'Por favor, selecciona un archivo de Excel (.xls o .xlsx).'
+        });
+        return; 
+    }
+
     const reader = new FileReader();
     reader.onload = function(event) {
         const data = new Uint8Array(event.target.result);
@@ -30,34 +43,19 @@ document.getElementById("archivo").addEventListener("change", function() {
         success1();
         setTimeout(function() {
             location.reload();
-          }, 1800);
+        }, 1800);
     };
 
     reader.readAsArrayBuffer(archivo); // Leer el archivo como un ArrayBuffer
 });
 
-// Manejar la exportación de datos
-document.getElementById("exportar").addEventListener("click", function() {
-    const historial = JSON.parse(localStorage.getItem('historial')) || [];
-    const datos = historial.map(registro => ({
-        'Fecha': registro.fecha,
-        'Entrada': registro.entrada,
-        'Salida': registro.salida || 'N/A'
-    }));
-
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(datos);
-    XLSX.utils.book_append_sheet(wb, ws, "Registro");
-    XLSX.writeFile(wb, "Registro.xlsx");
-});
-
-
-function success1(){
+// Función para mostrar alerta de éxito en la importación
+function success1() {
     Swal.fire({
         position: "top-end",
         icon: "success",
         title: "Los datos se importaron correctamente",
         showConfirmButton: false,
         timer: 1500
-      });
+    });
 }

@@ -3,37 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro Profesional de Horas</title>
+    <title>Registro</title>
     <link rel="icon" href="sr.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="manifest" href="manifest.json">
 </head>
+<style>
+    #formularioContainer {
+        display: none; /* Oculta por defecto */
+    }
+    #contenidoPrincipal {
+        display: none; /* Oculta por defecto */
+    }
+</style>
 <body>
-    <div id="formularioContainer" class="d-flex justify-content-center align-items-center min-vh-100 py-5">
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider round"></div>
+        </label>
+        <em>Modo Oscuro</em>
+    </div>
+
+    <div id="formularioContainer" class="justify-content-center align-items-center min-vh-100 py-5">
         <div class="card p-5 shadow-lg text-center" style="width: 100%; max-width: 450px;">
-            <h2 class="mb-4">Registro de Horas Diarias</h2>
+            <h2 class="mb-4">Registro de Usuario</h2>
             <form id="formHoras">
                 <div class="mb-4">
-                    <label for="horasPorDia" class="form-label">¿Cuántas horas trabajarás hoy?</label>
-                    <input type="number" id="horasPorDia" class="form-control" placeholder="Ingresa las horas" min="1" required>
+                    <label for="usuario" class="form-label">Ingresa tu nombre completo</label>
+                    <input type="text" id="usuario" class="form-control" placeholder="Ingresa tu nombre completo" required maxlength="30">
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Comenzar Registro</button>
             </form>
         </div>
-    </div>
-    
-    <div id="contenidoPrincipal" class="container my-5 p-5 shadow-lg rounded text-center d-none">
+    </div> 
+    <div id="contenidoPrincipal" class="container my-5 p-5 shadow-lg rounded text-center">
         <div class="datos mb-4">
+            <button id="insertNueva" class="btn btn-secondary">Insertar Nuevos Datos</button>
             <button id="borrarDatos" class="btn btn-danger">Borrar Todos los Datos</button>
         </div>
         <h2 class="mb-4">Sistema de Registro de Horas</h2>
         <div class="mb-4">
             <h3>Fecha y Hora Actual</h3>
             <p id="fechaCompleta" class="fw-bold fs-5"></p>
+            <p id="nombreUsuarioMostrar" class="fs-4 mb-4"></p>
         </div>
         <hr class="lin">
         <div class="row mb-4">
@@ -60,11 +79,13 @@
                     <button class="btn btn-success" id="exportar">Exportar</button>
                     <button class="btn btn-success" title="Refrescar" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i></button>
                 </div>
-            </div>
-            <div class="contenido1">
-                <div id="fechaguardada" class="mb-2"></div>
-                <div id="horasGuardadas"></div>
-            </div>           
+            </div><br><br>
+            <div class="historial-scroll">
+                <div class="contenido1">
+                    <div id="fechaguardada" class="mb-2"></div>
+                    <div id="horasGuardadas"></div>
+                </div>
+            </div>      
         </div>      
         <hr class="lin">
         <h4 class="mb-3">Resumen de Horas Trabajadas</h4>
@@ -74,9 +95,48 @@
         <hr class="lin">
         <div id="totalH" class="totalH mt-4 fs-5 fw-bold"></div><br><br>
         <button id="export-T" class="btn btn-success responsive-button">Exportar Todo</button>
+
+        <!-- Modal para editar registros -->
+        <div id="modalEditar" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>Editar Registro</h2>
+                <label for="fechaInput">Fecha:</label>
+                <input type="date" id="fechaInput" required>
+                
+                <label for="entradaInput">Hora de Entrada:</label>
+                <div class="hora-container">
+                    <input type="time" id="entradaInput" step="1" required>
+                </div>
+                
+                <label for="salidaInput">Hora de Salida:</label>
+                <div class="hora-container">
+                    <input type="time" id="salidaInput" step="1" required>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-success" id="guardarEdicion">Guardar</button>
+                <button class="btn btn-danger" id="cancelarEdicion">Cancelar</button>
+                </div>
+            </div> 
+        </div>
+        <div id="modalNuevaInsertar" class="modal-2" style="display:none;">
+            <div class="modal-content-2">
+                <h2>Insertar Nuevos Datos</h2>
+                <label for="nuevaFechaInput">Fecha:</label>
+                <input type="date" id="nuevaFechaInput" required>
+                
+                <label for="nuevaEntradaInput">Hora de Entrada:</label>
+                <input type="time" id="nuevaEntradaInput" required step="1">
+                
+                <label for="nuevaSalidaInput">Hora de Salida:</label>
+                <input type="time" id="nuevaSalidaInput" required step="1">
+                
+                <button id="submitNuevaData" class="btn btn-success">Aceptar</button>
+                <button id="closeNuevaModal" class="btn btn-danger">Cerrar</button>
+            </div>
+        </div>
+        
     </div>
-    <script>
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="script.js"></script>
     <script src="xport.js"></script>

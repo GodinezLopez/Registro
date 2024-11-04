@@ -1,195 +1,283 @@
-
-#fechaCuadro {
-    background-color: #333; 
-    color: #fff;          
-    text-align: center;
-}
-.center{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.horas input{
-    text-align: center;
-    width: 50%;
-    font-size: 20px;
-    border: solid 1px #000;
-    user-select: none;
-}
-.lin{
-    border: solid 0.7px #000;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-.form-label{
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.content{
-    display: flex;
-    justify-content: center;
-}
-.buttons{
-    width: 30%;
-    display: flex;
-    justify-content: space-between;
-}
-.inpexp{
-    display: flex;
-    justify-content: end;
-    gap: 10px;
-}
-.datos{
-    display: flex;
-    justify-content: end;
-}
-
-.histo{
-    padding: 1rem;
-    margin: 2rem;
-    border: solid;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 10px;
-}
-.fecha{
-    font-size: 16px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.borr{
-    width: 15%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.borr button{
-    padding: 7px;
-    border-radius: 7px;
-    transition: 0.3s;
-}
-.borr button:hover{
-    transform: scale(1.1);
-    background: #ff0000;
-    color: #fff;
-}
-.ch{
-    display: flex;
-    width: 100%;
-}
-.fec{
-    margin-top: 3rem;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    border: solid;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 17px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.totalH{
-    font-size: 20px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    letter-spacing: 1px;
-}
-#archivo{
-    display: none;
-}
-
-
-
 :root {
     --primary-color: #3498db;
     --secondary-color: #2c3e50;
-    --accent-color: #e74c3c;
     --background-color: #ecf0f1;
     --text-color: #34495e;
+    --card-bg: #ffffff;
+    --input-bg: #f8f9fa;
+    --input-border: #ced4da;
+    --btn-primary: #3498db;
+    --btn-success: #2ecc71;
+    --btn-danger: #e74c3c;
+    --modal-bg: #ffffff;
+    --modal-border: #dee2e6;
 }
+
 body {
+    font-family: 'Arial', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 .card {
+    background-color: var(--card-bg);
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border: none;
-    background-color: #ffffff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.form-control {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
 .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--btn-primary);
+    border-color: var(--btn-primary);
 }
+
 .btn-success {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: var(--btn-success);
+    border-color: var(--btn-success);
 }
+
 .btn-danger {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
+    background-color: var(--btn-danger);
+    border-color: var(--btn-danger);
 }
-.btn {
-    border-radius: 30px;
-    padding: 10px 20px;
+
+/* Modal styles */
+.modal, .modal-2 {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content, .modal-content-2 {
+    background-color: var(--modal-bg);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--modal-border);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
     font-weight: bold;
-    transition: all 0.3s ease;
+    cursor: pointer;
 }
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+.close:hover,
+.close:focus {
+    color: var(--text-color);
+    text-decoration: none;
+    cursor: pointer;
 }
-.lin {
-    border-top: 2px solid var(--primary-color);
-    margin: 2rem 0;
+
+/* Input styles */
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: var(--input-bg);
+    color: var(--text-color);
 }
-.inpexp {
+
+/* Dark mode styles */
+body.dark-mode {
+    --background-color: #1a1a1a;
+    --text-color: #ffffff;
+    --card-bg: #2c2c2c;
+    --input-bg: #3a3a3a;
+    --input-border: #4a4a4a;
+    --btn-primary: #2980b9;
+    --btn-success: #27ae60;
+    --btn-danger: #c0392b;
+    --modal-bg: #2c2c2c;
+    --modal-border: #4a4a4a;
+}
+
+/* Ensure text color changes in dark mode for all relevant elements */
+.dark-mode .form-control,
+.dark-mode input[type="date"],
+.dark-mode input[type="time"],
+.dark-mode select,
+.dark-mode .modal-content,
+.dark-mode .modal-content-2,
+.dark-mode .close,
+.dark-mode label {
+    color: var(--text-color);
+}
+
+/* Theme switch styles */
+.theme-switch-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
 }
-.contenido1 {
-    margin-top: 2rem;
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
 }
-.ch {
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+}
+
+input:checked + .slider {
+    background-color: #66bb6a;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Additional styles */
+.historial-scroll {
     max-height: 300px;
     overflow-y: auto;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
+    border: 1px solid var(--input-border);
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--card-bg);
+}
+
+.histo {
     padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fecha {
+    font-size: 16px;
+}
+
+.borr {
+    display: flex;
+    gap: 10px;
+}
+
+.borr button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.borr .BR:hover {
+    background-color: var(--btn-danger);
+    color: #fff;
+}
+
+.borr .ER:hover {
+    background-color: var(--btn-primary);
+    color: #fff;
+}
+
+.ch {
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    padding: 15px;
     margin-top: 1rem;
-    background-color: #f8f9fa;
 }
-h2, h3, h4 {
-    color: var(--secondary-color);
-    font-weight: bold;
+
+.fec {
+    border-bottom: 1px solid var(--input-border);
+    padding: 10px 0;
 }
-.form-control {
-    border-radius: 20px;
-    border: 1px solid #ced4da;
-    padding: 10px 15px;
+
+.totalH {
+    font-size: 18px;
+    margin-top: 1rem;
 }
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+
+#archivo {
+    display: none;
 }
-#contenidoPrincipal {
-    background-color: #ffffff;
-    border-radius: 20px;
-}
+
+/* Responsive design */
 @media (max-width: 768px) {
-    .card {
-        width: 95% !important;
-    }
     .buttons {
-        display: flex;
         flex-direction: column;
-        gap: 10px;
+        align-items: stretch;
+    }
+    
+    .responsive-button {
+        margin-bottom: 10px;
+    }
+    
+    .inpexp {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .modal-content, .modal-content-2 {
+        width: 95%;
     }
 }
-.responsive-button {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    min-width: 120px; /* Establece un ancho mínimo para los botones */
+.buttons{
+    width: 100%;
+}
+.buttons button{
+    width: 35%;
+    margin: 10px;
 }
