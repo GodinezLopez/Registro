@@ -705,8 +705,85 @@ if (currentTheme) {
     }
 }
 
-// Your existing JavaScript code goes here
-// ...
+//ESPORTAR TODO-----------------------------------------------------------
+function exportarHistorial() {
+    const historial = JSON.parse(localStorage.getItem('historial')) || [];
+    
+    // Verificar si hay datos para exportar
+    if (historial.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'No hay datos para exportar',
+            text: 'Por favor, registra tus entradas y salidas antes de intentar exportar.',
+        });
+        return;
+    }
 
-// Remember to update any DOM manipulation or styling in your existing code
-// to use the CSS variables for colors to ensure compatibility with dark mode
+    // Confirmar si desea descargar el historial
+    Swal.fire({
+        title: '¿Deseas descargar todo tu historial?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, descargar',
+        cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Obtener el nombre de usuario guardado
+            const nombreUsuario = localStorage.getItem('nombreUsuario') || 'Usuario';
+
+            // Crear un array de filas para la hoja de cálculo
+            const filas = [['Nombre de Usuario:', nombreUsuario], ['Fecha', 'Entrada', 'Salida', 'Horas Concluidas']];
+            let totalMinutos = 0;
+
+            historial.forEach((registro) => {
+                // Calcular horas concluidas
+                let horasConcluidas = '';
+                if (registro.salida) {
+                    const entradaEnMinutos = convertirA12HorasEnMinutos(registro.entrada);
+                    const salidaEnMinutos = convertirA12HorasEnMinutos(registro.salida);
+                    let minutosTrabajados = salidaEnMinutos - entradaEnMinutos;
+
+                    if (minutosTrabajados < 0) {
+                        minutosTrabajados += 1440; // Ajuste si la salida es después de medianoche
+                    }
+
+                    totalMinutos += minutosTrabajados;
+                    const horasTrabajadas = Math.floor(minutosTrabajados / 60);
+                    const minutosRestantes = minutosTrabajados % 60;
+                    horasConcluidas = `${horasTrabajadas} horas con ${minutosRestantes} minutos`;
+                }
+
+                // Agregar la fila de datos
+                filas.push([registro.fecha, registro.entrada, registro.salida || '', horasConcluidas]);
+            });
+
+            // Calcular total horas
+            const totalHoras = Math.floor(totalMinutos / 60);
+            const minutosRestantesTotales = totalMinutos % 60;
+            const totalHorasTexto = `Total: ${totalHoras} horas con ${minutosRestantesTotales} minutos`;
+
+            // Agregar total al final
+            filas.push(['', '', '', totalHorasTexto]);
+
+            // Crear un libro de trabajo y una hoja
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(filas);
+
+            // Agregar la hoja al libro
+            XLSX.utils.book_append_sheet(wb, ws, 'Historial');
+
+            // Exportar el archivo Excel
+            XLSX.writeFile(wb, 'historial.xlsx');
+
+            // Mostrar alerta de éxito tras la exportación
+            Swal.fire({
+                icon: 'success',
+                title: 'Exportación Exitosa',
+                text: `El historial de ${nombreUsuario} se ha exportado correctamente.`,
+            });
+        }
+    });
+}
+
+// Asocia la función al botón
+document.getElementById("export-T").addEventListener("click", exportarHistorial);

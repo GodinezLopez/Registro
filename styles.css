@@ -11,6 +11,7 @@
     --btn-danger: #e74c3c;
     --modal-bg: #ffffff;
     --modal-border: #dee2e6;
+    user-select: none;
 }
 
 body {
@@ -32,6 +33,7 @@ body {
     border-color: var(--input-border);
     color: var(--text-color);
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    user-select: none;
 }
 
 .btn-primary {
@@ -118,7 +120,7 @@ body.dark-mode {
 }
 
 /* Ensure text color changes in dark mode for all relevant elements */
-.dark-mode .form-control,
+
 .dark-mode input[type="date"],
 .dark-mode input[type="time"],
 .dark-mode select,
@@ -127,6 +129,18 @@ body.dark-mode {
 .dark-mode .close,
 .dark-mode label {
     color: var(--text-color);
+}
+.dark-mode h2 {
+    color: var(--text-color);
+}
+.dark-mode input::placeholder{
+    color: var(--text-color);
+}
+.dark-mode input:focus::placeholder{
+    color: var(--background-color);
+}
+.dark-mode .form-control:focus::placeholder{
+    color: var(--background-color);
 }
 
 /* Theme switch styles */
@@ -138,7 +152,11 @@ body.dark-mode {
     right: 20px;
     z-index: 100;
 }
-
+.form-control{
+    text-align: center;
+    padding: 7px;
+    font-size: 20px;
+}
 .theme-switch {
     display: inline-block;
     height: 34px;
@@ -189,7 +207,7 @@ input:checked + .slider:before {
 }
 
 /* Additional styles */
-.historial-scroll {
+.historial-scroll, .ch {
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid var(--input-border);
@@ -233,13 +251,6 @@ input:checked + .slider:before {
     color: #fff;
 }
 
-.ch {
-    border: 1px solid var(--input-border);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 1rem;
-}
-
 .fec {
     border-bottom: 1px solid var(--input-border);
     padding: 10px 0;
@@ -254,11 +265,39 @@ input:checked + .slider:before {
     display: none;
 }
 
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.buttons button {
+    width: calc(35% - 20px);
+    margin: 10px;
+}
+
 /* Responsive design */
+@media (max-width: 1024px) {
+    .theme-switch-wrapper {
+        top: 10px;
+        right: 10px;
+    }
+
+    .buttons button {
+        width: calc(50% - 20px);
+    }
+}
+
 @media (max-width: 768px) {
     .buttons {
         flex-direction: column;
         align-items: stretch;
+    }
+    
+    .buttons button {
+        width: 100%;
+        margin: 5px 0;
     }
     
     .responsive-button {
@@ -272,12 +311,45 @@ input:checked + .slider:before {
     
     .modal-content, .modal-content-2 {
         width: 95%;
+        margin: 10% auto;
+    }
+
+    .histo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .borr {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .historial-scroll, .ch {
+        max-height: 250px;
     }
 }
-.buttons{
-    width: 100%;
+
+@media (max-width: 480px) {
+    .theme-switch-wrapper {
+        top: 5px;
+        right: 5px;
+    }
+
+    .modal-content, .modal-content-2 {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .close {
+        font-size: 24px;
+    }
+
+    .historial-scroll, .ch {
+        max-height: 200px;
+    }
 }
-.buttons button{
-    width: 35%;
-    margin: 10px;
+.datos{
+    display: flex;
+    justify-content: space-between;
 }
